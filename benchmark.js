@@ -95,6 +95,42 @@ function squareArrayTest(){
   runSuite(testLarge);
 }
 
+function squareArrayGenTest() {
+  function squareArrayGenJs(len) {
+      const arr = new Int32Array(len).map((_, i) => i);
+      const result = new Int32Array(len);
+      for (let i = 0; i < len; ++i) {
+          const e = arr[i];
+          result[i] = e * e;
+      }
+      return result;
+  }
+  const squareArrayGenAs = wasm.squareArrayGen;
+
+  const arrayLargeTest = new Benchmark.Suite("squareArrayGenLarge");
+
+  arrayLargeTest
+      .add("AssemblyScript", function () {
+          squareArrayGenAs(200);
+      })
+      .add("JavaScript", function () {
+          squareArrayGenJs(200);
+      });
+  runSuite(arrayLargeTest);
+
+  const arraySmallTest = new Benchmark.Suite("squareArrayGenSmall");
+
+  arraySmallTest
+      .add("AssemblyScript", function () {
+          squareArrayGenAs(20);
+      })
+      .add("JavaScript", function () {
+          squareArrayGenJs(20);
+      });
+  runSuite(arraySmallTest);
+}
+
 // addTest();
 // factorialTest();
-squareArrayTest();
+// squareArrayTest();
+squareArrayGenTest();

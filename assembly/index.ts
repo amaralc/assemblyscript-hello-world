@@ -21,3 +21,13 @@ export function squareArray(arr: Int32Array):Int32Array {
 
   return result;
 }
+
+export function squareArrayGen(len: i32): Int32Array {
+  const arr = new Int32Array(len).map((_, i) => i);
+  const result = new Int32Array(len);
+  for (let i = 0; i < len; ++i){
+    const e = unchecked(arr[i]);
+    unchecked((result[i] = e * e))
+  }
+  return result;
+}
