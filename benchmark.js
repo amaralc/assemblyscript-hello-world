@@ -32,4 +32,36 @@ function addTest(){
   runSuite(test);
 }
 
-addTest();
+function factorialTest(){
+  function factorialJs(i){
+    return i === 0 ? 1 : i * factorialJs(i - 1);
+  }
+  const factorialAs = wasm.factorial;
+
+  const testSmall = Benchmark.Suite('small factorial');
+
+  testSmall
+    .add('AssemblyScript', function(){
+      factorialAs(3);
+    })
+    .add('JavaScript', function(){
+      factorialJs(3);
+    })
+
+  runSuite(testSmall);
+  
+  const testLarge = Benchmark.Suite('large factorial');
+
+  testLarge
+    .add('AssemblyScript', function(){
+      factorialAs(10000);
+    })
+    .add('JavaScript', function(){
+      factorialJs(10000);
+    })
+
+  runSuite(testLarge);
+}
+
+// addTest();
+factorialTest();
